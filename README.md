@@ -326,3 +326,6 @@ There are multiple ways to connect ADX and PowerBI depending on the use case. Fo
 
 [Visualize data using a query imported into Power BI | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-imported-query)
 
+---
+🎉 Congrats! You've completed the second Microhack. Keep going with [Microhack 3: Advanced KQL, Policies, Security](https://github.com/Azure/azure-kusto-microhack3)
+
