@@ -11,6 +11,7 @@ Each challenge has a set of tasks that need to be completed in order to move on 
 In order to receive the ADX microhack digital badge, you will need to complete the challenges marked with 🎓. Please submit the KQL queries/commands of these challenges in the following link: [Answer sheet - ADX Microhack 3](https://forms.office.com/r/iz4cG1ngni)
 ---
 
+---
 #### Challenge 5: Explore and transform data
   
 **Expected Learning Outcomes:**
@@ -87,6 +88,8 @@ The schema of the new (destination) table would be:
 **Relevant docs for this challenge:**
   - [Kusto update policy - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/management/updatepolicy)
 
+---
+---
 ### Challenge 6: Going more advanced with KQL
 
 #### Task 1: Declaring variables 🎓
@@ -128,7 +131,7 @@ Once the map is displayed, you can click on the locations. Note that in order to
 <img src="/assets/images/Challenge6-Task3-map.png" width="400">
 
 ---
-#### Task 4: Range 🎓
+#### Task 4: Range 
 Range is a tabular operator: it generates a single-column table of values, whose values are start, start + step, ... up to and until stop.
 Run the following query and review the results:
 
@@ -139,6 +142,7 @@ range LastWeek from ago(7d) to now() step 1d
 
 We will use the range operator as part of the time series creation in the next tasks.
   
+---
 #### Machine learning with Kusto and time series analysis
 
 Many interesting use cases use machine learning algorithms and derive interesting insights from telemetry data. Often, these algorithms require a strictly structured dataset as their input. The raw log data usually doesn't match the required structure and size. We will see how we can use the make-series operator to create well curated data (time series).
@@ -199,7 +203,7 @@ Expected result:
 <img src="/assets/images/Challenge6-Task4-anomalies.png" width="650">
 </br></br>
 
-**FOR THE NEXT TASKS, WE WILL USE the NYC TAXI DATA.**  <br>
+💡 **FOR THE NEXT TASKS, WE WILL USE the NYC TAXI DATA.**  <br>
 
 If the proctor hasn't provided the data set, use this Azure Open Dataset on [NYC Taxi Rides](https://docs.microsoft.com/en-us/azure/open-datasets/dataset-taxi-yellow?tabs=azureml-opendatasets) to ingest this data into your ADX cluster.
 
@@ -236,7 +240,7 @@ Expected result:</br>
 <img src="/assets/images/tip_anomaly.png" width="650">
 
 ---
-#### Task 10: External data
+#### Task 10: External data 🎓
 
 The externaldata operator returns a table whose schema is defined in the query itself, and whose data is directly read from an external storage artifact, such as a blob in Azure Blob Storage, a file in Azure Data Lake Storage, or even a file in GitHub repository. Since the data is not being ingested into ADX, it cannot be indexed, compressed, or stored in the hot cache. For best performance, we recommend that data be ingested. External data can, however, be used in sporadic cases, where you do not want to ingest the data.</br>
 Take a look at this csv file: https://raw.githubusercontent.com/Azure/azure-kusto-microhack/main/assets/ExternalData/payment_type_lookup.csv.
@@ -265,7 +269,8 @@ Expected result:
   
  <img src="/assets/images/Challenge6-Task9-Pic1.png" width="650">
   
-#### Task 11: Forecasting
+---
+#### Task 12: Forecasting
 Create a timechart that will show:
 - The number of rides during July 2021
 - A forecast of the number of drive-ins for the first week of August, based on July 2021 (Use the series_decompose_forecast function).
