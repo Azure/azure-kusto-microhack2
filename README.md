@@ -12,7 +12,7 @@ In order to receive the ADX microhack digital badge, you will need to complete t
 ---
 
 ---
-#### Challenge 5: Explore and transform data
+### Challenge 5: Explore and transform data
   
 **Expected Learning Outcomes:**
 - Create an update policy to transform the data at ingestion time
@@ -23,9 +23,9 @@ For the next task, we will use the LogisticsTelemetry table (which obtains data 
 ##### Task 1: Create an update policy 🎓
   
 By taking 10 records, we can see that the telemetry column has a JSON structure. In this task, we will use an 'update policy' to manipulate the raw data in the LogisticsTelemetry table (the source table) and transform the JSON data into separate columns, that will be ingested into a new table that we’ll create (“target table”).</br>
-Update policy is like an internal ETL. It can help you manipulate or enrich the data as it gets ingested into the source table (e.g. extracting KSON into separate columns, creating a new calculated column, joining the new records with a static dimension table that is already in your database, etc). For these cases, using an update policy is a very common and powerful practice. </br>
+Update policy is like an internal ETL. It can help you manipulate or enrich the data as it gets ingested into the source table (e.g. extracting JSON into separate columns, creating a new calculated column, joining the new records with a static dimension table that is already in your database, etc). For these cases, using an update policy is a very common and powerful practice. </br>
 Each time records get ingested into the source table, the update policy's qeury (which we'll define in the update policy) will run on them (and only on newly ingested records - other existing records in the source table aren’t visible to the update policy when it runs), and the results of the query will be appended to the target table. </br>
-We want to create a new table, with a calculated column (we will call it: NumOfTagsCalculated) that contains the following value: telemetry.TotalTags + telemetry.TotalTags - telemetry.LostTags. </br>
+We want to create a new table, with a calculated column (we will call it: NumOfTagsCalculated) that contains the following value: telemetry.TotalTags - telemetry.LostTags. </br>
 
 The schema of the new (destination) table would be:
 ```
@@ -93,7 +93,7 @@ The schema of the new (destination) table would be:
 ### Challenge 6: Going more advanced with KQL
 
 #### Task 1: Declaring variables 🎓
-Use a **'let'** statement to create a list of the 10 device Ids which have the highest Shock. Then, use this list in a following query to find the average temperature of these 10 devices.
+Use a **'let'** statement to create a list of the 10 device Ids which have the highest Shock. Then, use this list in a following query to find the total average temperature of these 10 devices.
 
 You can use the **'let'** statement to set a variable name equal to an expression or a function.
 let statements are useful for:
@@ -219,6 +219,7 @@ Expected result:</br>
 Write a query to create a columnchart which will show the number of rides for each day of the week, across the entire data set.  You can use 1, 2, ..., 7 to denote Sunday through Saturday.
 
 [dayofweek() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/dayofweekfunction)
+[datetime_part() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/datetime-partfunction)
   
 Expected result:</br>
 <img src="/assets/images/taxi-days.png" width="650">
@@ -264,6 +265,8 @@ payment code and the description. Use a leftouter join to merge the rows of the 
 
 Render a time chart of the number of records, per payment type over time, with 1 day bins, based on data between 2021-07-01 and 2021-07-31. 
 What is the most common method of payment for rides? Credit cards or cash? What does it look like over time? 
+
+[join operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/joinoperator?pivots=azuredataexplorer)
 
 Expected result:
   
