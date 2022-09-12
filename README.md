@@ -112,8 +112,8 @@ Hint 3: Remember to include a ";" at the end of your let statement.
 Write a query to show a timechart of the number of records, by TransportationMode. Use 10 minute bins.
 
 Expected result:
+ ![Screen capture 1](/assets/images/chart-4.png)
 
-<img src="/assets/images/chart-4.png" width="650">
 
 ---
 #### Task 3: Some geo-mapping
@@ -227,6 +227,7 @@ Expected result:</br>
 ---
 #### Task 8: Multiple series on the same timechart
 Write a query to find out if the tip amount correlates with the number of passengers in the taxi between 1 July 2021 and 31 July 2021. Restrict the number of passengers to maximum of 4.
+
 Hint: How is average tip amount changing against passenger count and pickup time 
 
 Expected result:</br>
