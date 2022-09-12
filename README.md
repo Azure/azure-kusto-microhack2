@@ -227,6 +227,7 @@ Expected result:</br>
 ---
 #### Task 8: Multiple series on the same timechart
 Write a query to find out if the tip amount correlates with the number of passengers in the taxi between 1 July 2021 and 31 July 2021. Restrict the number of passengers to maximum of 4.
+Hint: How is average tip amount changing against passenger count and pickup time 
 
 Expected result:</br>
 <img src="/assets/images/taxi_passengers.png" width="650">
