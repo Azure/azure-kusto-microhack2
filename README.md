@@ -1,9 +1,9 @@
 ## Microhack 2: Data exploration and visualization with KQL (Preview)
 
 This Microhack is organized into the following 3 challenges:
-- Challenge 5: Explore and transform data
-- Challenge 6: Advanced KQL operators
-- Challenge 7: Visualisation
+- Challenge 4: Explore and transform data
+- Challenge 5: Advanced KQL operators
+- Challenge 6: Visualisation
 
 Each challenge has a set of tasks that need to be completed in order to move on to the next challenge. It is advisable to complete the challenges and tasks in the prescribed order.
 
@@ -12,7 +12,7 @@ In order to receive the ADX microhack digital badge, you will need to complete t
 ---
 
 ---
-### Challenge 5: Explore and transform data
+### Challenge 4: Explore and transform data
   
 **Expected Learning Outcomes:**
 - Create an update policy to transform the data at ingestion time
@@ -33,7 +33,7 @@ The schema of the new (destination) table would be:
 ```
 
   
-  ![Screen capture 1](/assets/images/Challenge3-Task2-Pic1.png)
+  ![Screen capture 1](/assets/images/Challenge4-Task1-Pic1.png)
   
   Example (note that the order of the keys may be different):
   
@@ -90,7 +90,7 @@ The schema of the new (destination) table would be:
 
 ---
 ---
-### Challenge 6: Going more advanced with KQL
+### Challenge 5: Going more advanced with KQL
 
 #### Task 1: Declaring variables 🎓
 Use a **'let'** statement to create a list of the 10 device Ids which have the highest Shock. Then, use this list in a following query to find the total average temperature of these 10 devices.
@@ -128,7 +128,7 @@ Once the map is displayed, you can click on the locations. Note that in order to
    
   Expected result:
   
-<img src="/assets/images/Challenge6-Task3-map.png" width="400">
+<img src="/assets/images/Challenge5-Task3-map.png" width="400">
 
 ---
 #### Task 4: Range 
@@ -167,7 +167,7 @@ We can use built in functions, that uses time series decomposition to forecast f
 
 This is what time series looks like:
 
-![Screen capture 1](/assets/images/Challenge6-Task4-Pic1.png)
+![Screen capture 1](/assets/images/Challenge5-Task4-Pic1.png)
 
 **Why should you use series instead of the summarize operator?**
 
@@ -200,7 +200,7 @@ The anomalies/outliers can be clearly spotted in the 'anomalies_flags' points.
   
 Expected result:
   
-<img src="/assets/images/Challenge6-Task4-anomalies.png" width="650">
+<img src="/assets/images/Challenge5-Task4-anomalies.png" width="650">
 </br></br>
 
 💡 **FOR THE NEXT TASKS, WE WILL USE the NYC TAXI DATA.**  <br>
@@ -272,7 +272,7 @@ What is the most common method of payment for rides? Credit cards or cash? What 
 
 Expected result:
   
- <img src="/assets/images/Challenge6-Task9-Pic1.png" width="650">
+ <img src="/assets/images/Challenge5-Task9-Pic1.png" width="650">
   
 ---
 #### Task 12: Forecasting
@@ -298,7 +298,7 @@ Expected result: </br>
 
 ---
 ---
-### Challenge 7: Visualisation
+### Challenge 6: Visualisation
 
 ---
 #### Task 1: Prepare interactive dashboards with ADX Dashboard 🎓
@@ -311,17 +311,17 @@ Include **filters for the dashboard** so that the queries do not need to be modi
 
 Hint 1: In the query window, explore the “Share” menu.
   
-  ![Screen capture 1](/assets/images/Challenge7-Task1-Pic1.png)
+  ![Screen capture 1](/assets/images/Challenge6-Task1-Pic1.png)
  
 - [Visualize data with the Azure Data Explorer dashboard | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/azure-data-explorer-dashboards)
 - [Parameters in Azure Data Explorer dashboards | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/dashboard-parameters)
 
-<img src="/assets/images/Challenge7-Task1-dashboard.png" width="500">
-<img src="/assets/images/Challenge7-Task1-dashboard2.png" width="500">
+<img src="/assets/images/Challenge6-Task1-dashboard.png" width="500">
+<img src="/assets/images/Challenge6-Task1-dashboard2.png" width="500">
   
 ---
 #### Task 2: Prepare management dashboard with PowerBI
-Visualize the outputs of [Task 5](https://github.com/Azure/azure-kusto-microhack#task-5-get-familiar-with-the-new-table-and-create-a-piechart) and [Task 6](https://github.com/Azure/azure-kusto-microhack#task-6-datetime-operations) in Challenge 6 in PowerBI using the DirectQuery mode. 
+Visualize the outputs of [Task 5](https://github.com/Azure/azure-kusto-microhack#task-5-get-familiar-with-the-new-table-and-create-a-piechart) and [Task 6](https://github.com/Azure/azure-kusto-microhack#task-6-datetime-operations) in Challenge 5 in PowerBI using the DirectQuery mode. 
 
 Hint 1: In the query window, explore the “Share” menu.
 
