@@ -111,7 +111,7 @@ Hint 3: Remember to include a ";" at the end of your let statement.
 #### Task 2: Add more fields to your timechart 🎓
 Write a query to show a timechart of the number of records, by TransportationMode. Use 10 minute bins.
 
-Expected result:
+Example result:
  ![Screen capture 1](/assets/images/chart-4.png)
 
 
@@ -126,7 +126,7 @@ Once the map is displayed, you can click on the locations. Note that in order to
 
 [render operator with scatter chart](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/renderoperator?pivots=azuredataexplorer)
    
-  Expected result:
+  Example result:
   
 <img src="/assets/images/Challenge5-Task3-map.png" width="400">
 
@@ -198,7 +198,7 @@ The anomalies/outliers can be clearly spotted in the 'anomalies_flags' points.
 [make-series](https://docs.microsoft.com/en-us/azure/data-explorer/time-series-analysis) <br>
 [ADX Anomaly Detection](https://docs.microsoft.com/en-us/azure/data-explorer/anomaly-detection#time-series-anomaly-detection)
   
-Expected result:
+Example result:
   
 <img src="/assets/images/Challenge5-Task4-anomalies.png" width="650">
 </br></br>
@@ -211,7 +211,7 @@ If the proctor hasn't provided the data set, use this Azure Open Dataset on [NYC
 #### Task 6: Get familiar with the new table and create a piechart 🎓
 Write some queries to get familiar with this table. After some familiarity, write a query to create a piechart of the payments type. Use 'tostring' to convert the payment_type to string before rendering the piechart.
 
-Expected result:</br>
+Example result:</br>
 <img src="/assets/images/taxi-pie.png" width="500">
 
 ---
@@ -221,7 +221,7 @@ Write a query to create a columnchart which will show the number of rides for ea
 [dayofweek() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/dayofweekfunction)
 [datetime_part() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/datetime-partfunction)
   
-Expected result:</br>
+Example result:</br>
 <img src="/assets/images/taxi-days.png" width="650">
 
 ---
@@ -230,7 +230,7 @@ Write a query to find out if the tip amount correlates with the number of passen
 
 Hint: How is average tip amount changing against passenger count and pickup time 
 
-Expected result:</br>
+Example result:</br>
 <img src="/assets/images/taxi_passengers.png" width="650">
 
 ---
@@ -239,7 +239,7 @@ Write a query to draw an anomaly chart for the tip amount in the month of July 2
 Hint 1: make-series for the average tip amount, with 1 h steps <br>
 Hint 2: Use series_decompose_anomalies with this series and parameter of 5 (sensitivity level)
 
-Expected result:</br>
+Example result:</br>
 <img src="/assets/images/tip_anomaly.png" width="650">
 
 ---
@@ -270,7 +270,7 @@ What is the most common method of payment for rides? Credit cards or cash? What 
 
 [join operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/joinoperator?pivots=azuredataexplorer)
 
-Expected result:
+Example result:
   
  <img src="/assets/images/Challenge5-Task9-Pic1.png" width="650">
   
@@ -293,7 +293,7 @@ taxi
 - Use series_decompose_forecast with parameters of this series and second parameter of: '24\*7' (The second parameter is an Integer specifying the number of points at the end of the series to predict (forecast). These points are excluded from the learning (regression) process. We will use '24\*7` additional data points, in order to forecast a week forward).
 - Once a series is created, you can render a timechart.
 
-Expected result: </br>
+Example result: </br>
 <img src="/assets/images/forecast.png" width="650">
 
 ---
