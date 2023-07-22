@@ -8,7 +8,7 @@ This Microhack is organized into the following 3 challenges:
 Each challenge has a set of tasks that need to be completed in order to move on to the next challenge. It is advisable to complete the challenges and tasks in the prescribed order.
 
 ---
-In order to receive the ADX microhack digital badge, you will need to complete the challenges marked with 🎓. Please submit the KQL queries/commands of these challenges in the following link: [Answer sheet - ADX Microhack 2](https://forms.office.com/r/RkyRWgVN0G)
+In order to receive the ADX microhack digital badge, you will need to complete the challenges marked with ✅. Please submit the KQL queries/commands of these challenges in the following link: [Answer sheet - ADX Microhack 2](https://forms.office.com/r/RkyRWgVN0G)
 ---
 
 ---
@@ -20,7 +20,7 @@ In order to receive the ADX microhack digital badge, you will need to complete t
 For the next task, we will use the LogisticsTelemetry table (which obtains data from the Event Hub).
 
 ---
-##### Task 1: Create an update policy 🎓
+##### Task 1: Create an update policy ✅
   
 By taking 10 records, we can see that the telemetry column has a JSON structure. In this task, we will use an 'update policy' to manipulate the raw data in the LogisticsTelemetry table (the source table) and transform the JSON data into separate columns, that will be ingested into a new table that we’ll create (“target table”).</br>
 Update policy is like an internal ETL. It can help you manipulate or enrich the data as it gets ingested into the source table (e.g. extracting JSON into separate columns, creating a new calculated column, joining the new records with a static dimension table that is already in your database, etc). For these cases, using an update policy is a very common and powerful practice. </br>
@@ -65,7 +65,7 @@ The schema of the new (destination) table would be:
 .create table LogisticsTelemetryManipulated  (deviceId:string, enqueuedTime:datetime, NumOfTagsCalculated:long, Temp:real) 
 ```
   
-  **Create a function for the update policy** 🎓
+  **Create a function for the update policy** ✅
   
 ``` 
 .create-or-alter function ManipulateLogisticsTelemetryData()
@@ -74,7 +74,7 @@ The schema of the new (destination) table would be:
 } 
 ```
     
-  **Create the update policy** 🎓
+  **Create the update policy** ✅
 ``` 
      <Complete the command>
 ```
@@ -92,7 +92,7 @@ The schema of the new (destination) table would be:
 ---
 ### Challenge 5: Going more advanced with KQL
 
-#### Task 1: Declaring variables 🎓
+#### Task 1: Declaring variables ✅
 Use a **'let'** statement to create a list of the 10 device Ids which have the highest Shock. Then, use this list in a following query to find the total average temperature of these 10 devices.
 
 You can use the **'let'** statement to set a variable name equal to an expression or a function.
@@ -108,7 +108,7 @@ Hint 2: [let - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/
 Hint 3: Remember to include a ";" at the end of your let statement.
 
 ---
-#### Task 2: Add more fields to your timechart 🎓
+#### Task 2: Add more fields to your timechart ✅
 Write a query to show a timechart of the number of records, by TransportationMode. Use 10 minute bins.
 
 Example result:
@@ -174,7 +174,7 @@ This is what time series looks like:
 The summarize operator does not add "null bins" — rows for time bin values for which there's no corresponding row in the table. It's a good idea to "pad" the table with those bins. Advanced built in ML capabilities like anomaly detection need the data points to be consistently measured at equally spaced intervals. The **make-series** can create such a “complete” series.
 
 ---
-#### Task 5: Anomaly detection 🎓
+#### Task 5: Anomaly detection ✅
 Write a query to create an anomaly chart of the average shock.
 
 For this task, we will provide more instructions:
@@ -208,14 +208,14 @@ Example result:
 If the proctor hasn't provided the data set, use this Azure Open Dataset on [NYC Taxi Rides](https://docs.microsoft.com/en-us/azure/open-datasets/dataset-taxi-yellow?tabs=azureml-opendatasets) to ingest this data into your ADX cluster.
 
 ---
-#### Task 6: Get familiar with the new table and create a piechart 🎓
+#### Task 6: Get familiar with the new table and create a piechart ✅
 Write some queries to get familiar with this table. After some familiarity, write a query to create a piechart of the payments type. Use 'tostring' to convert the payment_type to string before rendering the piechart.
 
 Example result:</br>
 <img src="/assets/images/taxi-pie.png" width="500">
 
 ---
-#### Task 7: Datetime operations 🎓
+#### Task 7: Datetime operations ✅
 Write a query to create a columnchart which will show the number of rides for each day of the week, across the entire data set.  You can use 1, 2, ..., 7 to denote Sunday through Saturday.
 
 [dayofweek() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/dayofweekfunction)
@@ -234,7 +234,7 @@ Example result:</br>
 <img src="/assets/images/taxi_passengers.png" width="650">
 
 ---
-#### Task 9: Detect anomalies in the tip amount 🎓
+#### Task 9: Detect anomalies in the tip amount ✅
 Write a query to draw an anomaly chart for the tip amount in the month of July 2021. <br>
 Hint 1: make-series for the average tip amount, with 1 h steps <br>
 Hint 2: Use series_decompose_anomalies with this series and parameter of 5 (sensitivity level)
@@ -243,7 +243,7 @@ Example result:</br>
 <img src="/assets/images/tip_anomaly.png" width="650">
 
 ---
-#### Task 10: External data 🎓
+#### Task 10: External data ✅
 
 The externaldata operator returns a table whose schema is defined in the query itself, and whose data is directly read from an external storage artifact, such as a blob in Azure Blob Storage, a file in Azure Data Lake Storage, or even a file in GitHub repository. Since the data is not being ingested into ADX, it cannot be indexed, compressed, or stored in the hot cache. For best performance, we recommend that data be ingested. External data can, however, be used in sporadic cases, where you do not want to ingest the data.</br>
 Take a look at this csv file: https://raw.githubusercontent.com/Azure/azure-kusto-microhack/main/assets/ExternalData/payment_type_lookup.csv.
@@ -261,7 +261,7 @@ payment_type_lookup_data
 [externaldata operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/externaldata-operator?pivots=azuredataexplorer)
   
 ---
-#### Task 11: Let's **join** the party 🎓
+#### Task 11: Let's **join** the party ✅
 The taxi rides table has a field of Payment_type. This is a numeric code signifying how the passenger paid for the trip. Use the payment_type_lookup, to join between the 
 payment code and the description. Use a leftouter join to merge the rows of the two tables to form a new table, by matching values of the payment code column.
 
@@ -301,7 +301,7 @@ Example result: </br>
 ### Challenge 6: Visualisation
 
 ---
-#### Task 1: Prepare interactive dashboards with ADX Dashboard 🎓
+#### Task 1: Prepare interactive dashboards with ADX Dashboard ✅
 
 Using the Dashboard feature of Azure Data Explorer, build a dashboard using outputs of any 5 queries (on LogisticsTelemetryHistorical table) that you have created in the previous challenges with the following improvements:
   - Add filter on the dashboard so that the user can choose the timespan
