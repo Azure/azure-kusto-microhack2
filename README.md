@@ -1,4 +1,4 @@
-# Microhack 2: Data exploration and visualization with KQL
+# Microhack 2: Data Exploration and Visualization with KQL
 
 This Microhack is organized into the following 3 challenges:
 
@@ -96,7 +96,7 @@ LogisticsTelemetryManipulated
 | take 10
 ```
 
-**Relevant docs for this challenge:**
+References:
 
 - [Kusto update policy - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/management/updatepolicy)
 
@@ -108,7 +108,9 @@ LogisticsTelemetryManipulated
 
 ### Task 1: Declaring variables 🎓
 
-Use a **'let'** statement to create a list of the 10 device ids which have the highest Shock. Then, use this list in a following query to find the total average temperature of these 10 devices.
+📆 Use table: `LogisticsTelemetryHistorical`
+
+✍🏻 Use a **'let'** statement to create a list of the 10 device ids which have the highest Shock. Then, use this list in a following query to find the total average temperature of these 10 devices.
 
 You can use the **'let'** statement to set a variable name equal to an expression or a function.
 
@@ -118,15 +120,17 @@ let statements are useful for:
 - Defining constants outside of the query body for readability.
 - Defining a variable once and using it multiple times within a query.
 
-Hint 1: [in operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/in-cs-operator#subquery)
-Hint 2: [let - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/letstatement#examples)
-Hint 3: Remember to include a semicolon (`;`) at the end of your let statement.
+🕵🏻 Hint 1: [in operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/in-cs-operator#subquery)
+🕵🏻 Hint 2: [let - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/letstatement#examples)
+🕵🏻 Hint 3: Remember to include a semicolon (`;`) at the end of your let statement.
 
 ---
 
 ### Task 2: Add more fields to your timechart 🎓
 
-Write a query to show a timechart of the number of records, by transportation mode. Use 10 minute bins.
+📆 Use table: `LogisticsTelemetryHistorical`
+
+✍🏻 Write a query to show a timechart of the historical number of records, by transportation mode. Use 10 minute bins.
 
 Example result:
 
@@ -136,18 +140,22 @@ Example result:
 
 ### Task 3: Some Geo-Mapping
 
-Write a query to show on a map, the locations (based on the longitude and latitude) of 10 devices with the highest temperature in the last 90 days.
+📆 Use table: `LogisticsTelemetryHistorical`
 
-Hint 1: 'top' operator
-Hint 2: render scatterchart with (kind = map)
+✍🏻 Write a query to show on a map, the locations (based on the longitude and latitude) of 10 devices with the highest temperature in the last 90 days.
+
+🕵🏻 Hint 1: `top` operator
+🕵🏻 Hint 2: `render scatterchart with (kind=map)`
 
 Once the map is displayed, you can click on the locations. Note that in order to show more details in the balloon, you need to change the render phrase to include `series=<TempColumn>`.
-
-[render operator with scatter chart](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/renderoperator?pivots=azuredataexplorer)
 
 Example result:
 
 ![Geo-Mapping](/assets/images/Challenge5-Task3-map.png)
+
+References:
+
+- [render operator with scatter chart](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/renderoperator?pivots=azuredataexplorer)
 
 ---
 
@@ -203,11 +211,11 @@ The summarize operator does not add "null bins" - rows for time bin values for w
 
 ### Task 5: Anomaly Detection 🎓
 
-Write a query to create an anomaly chart of the average shock.
+📆 Use table: `LogisticsTelemetryHistorical`
 
-For this task, we will provide more instructions:
+✍🏻 Write a query to create an anomaly chart of the average shock.
 
-To generate these series, start with:
+For this task, we will provide more instructions. To generate these series, start with:
 
 ```Kusto
 let min_t = (toscalar(LogisticsTelemetryHistorical | summarize min(enqueuedTime)));
@@ -218,7 +226,7 @@ LogisticsTelemetryHistorical
 ```
 
 Now, we will use this `avg_shock_series` and run `series_decompose_anomalies`.
-This built-in function takes an expression containing a series (dynamic numerical array) as input, and extracts anomalous points with scores.
+This built-in function takes an expression containing a series (_dynamic_ numerical array) as input, and extracts anomalous points with scores.
 
 ```Kusto
 | extend anomalies_flags = series_decompose_anomalies(avg_shock_series, 1)
@@ -227,12 +235,16 @@ This built-in function takes an expression containing a series (dynamic numerica
 
 The anomalies/outliers can be clearly spotted in the 'anomalies_flags' points.
 
-[make-series](https://docs.microsoft.com/en-us/azure/data-explorer/time-series-analysis)
-[ADX Anomaly Detection](https://docs.microsoft.com/en-us/azure/data-explorer/anomaly-detection#time-series-anomaly-detection)
-
 Example result:
 
 ![Anomaly Detection on Average Shock](/assets/images/Challenge5-Task4-anomalies.png)
+
+References:
+
+- [make-series](https://docs.microsoft.com/en-us/azure/data-explorer/time-series-analysis)
+- [ADX Anomaly Detection](https://docs.microsoft.com/en-us/azure/data-explorer/anomaly-detection#time-series-anomaly-detection)
+
+---
 
 💡 **FOR THE NEXT TASKS, WE WILL USE the NYC TAXI DATA.**
 
@@ -242,7 +254,11 @@ The NYC Taxi data was ingested into the `NYCTaxiRides` table during Microhack 1.
 
 ### Task 6: Get familiar with the new table and create a piechart 🎓
 
-Write some queries to get familiar with this table. After some familiarity, write a query to create a piechart of the payments type. Use 'tostring' to convert the `payment_type` to a string before rendering the piechart.
+Write some queries to get familiar with this table.
+
+✍🏻 After some familiarity, write a query to create a piechart of the payments type. Use `tostring()` to convert the `payment_type` to a string before rendering the piechart.
+
+For now, the payment types will be represented by numbers. We will join the payment type table in a later task.
 
 Example result:
 
@@ -252,22 +268,24 @@ Example result:
 
 ### Task 7: Datetime operations 🎓
 
-Write a query to create a column chart which will show the number of rides for each day of the week, across the entire data set. You can use 1, 2, ..., 7 to denote Sunday through Saturday.
-
-[dayofweek() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/dayofweekfunction)
-[datetime_part() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/datetime-partfunction)
+✍🏻 Write a query to create a column chart which will show the number of rides for each day of the week, across the entire data set. You can use 1, 2, ..., 7 to denote Sunday through Saturday.
 
 Example result:
 
 ![Datetimme Operations](/assets/images/taxi-days.png)
 
+References:
+
+- [dayofweek() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/dayofweekfunction)
+- [datetime_part() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/datetime-partfunction)
+
 ---
 
 ### Task 8: Multiple series on the same timechart
 
-Write a query to find out if the tip amount correlates with the number of passengers in the taxi between 1 July 2022 and 31 July 2022. Restrict the number of passengers to a maximum of 4.
+✍🏻 Write a query to find out if the tip amount correlates with the number of passengers in the taxi between 1 July 2022 and 31 July 2022. Restrict the number of passengers to a maximum of 4.
 
-Hint: How is average tip amount changing against passenger count and pickup time
+🕵🏻 Hint: How is average tip amount changing against passenger count and pickup time?
 
 Example result:
 
@@ -277,10 +295,10 @@ Example result:
 
 ### Task 9: Detect anomalies in the tip amount 🎓
 
-Write a query to draw an anomaly chart for the tip amount in the month of July 2022.
+✍🏻 Write a query to draw an anomaly chart for the tip amount in the month of July 2022.
 
-Hint 1: `make-series` for the average tip amount, with 1 hour steps
-Hint 2: Use `series_decompose_anomalies` with this series and parameter of 5 (sensitivity level)
+🕵🏻 Hint 1: `make-series` for the average tip amount, with 1-hour steps
+🕵🏻 Hint 2: Use `series_decompose_anomalies` with this series and parameter of `5` (sensitivity level)
 
 Example result:
 
@@ -306,7 +324,9 @@ with(format="csv", ignoreFirstRecord=true))
 payment_type_lookup_data
 ```
 
-[externaldata operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/externaldata-operator?pivots=azuredataexplorer)
+References:
+
+- [externaldata operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/externaldata-operator?pivots=azuredataexplorer)
 
 ---
 
@@ -314,37 +334,44 @@ payment_type_lookup_data
 
 The taxi rides table has a field of `Payment_type`. This is a numeric code signifying how the passenger paid for the trip. Use the `payment_type_lookup`, to join between the payment code and the description. Use a _leftouter join_ to merge the rows of the two tables to form a new table, by matching values of the payment code column.
 
-Render a time chart of the number of records, per payment type over time, with 1 day bins, based on data between 2021-07-01 and 2021-07-31.
+✍🏻 Peform the join operation and render a time chart of the number of records, per payment type over time, with 1 day bins, based on data between 2021-07-01 and 2021-07-31.
 
-What is the most common method of payment for rides? Credit cards or cash? What does it look like over time?
-
-[join operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/joinoperator?pivots=azuredataexplorer)
+🤔 What is the most common method of payment for rides? Credit cards or cash?
+🤔 What does it look like over time?
 
 Example result:
 
 ![Payment Types Joined in Timechart](/assets/images/Challenge5-Task9-Pic1.png)
 
+References:
+
+- [join operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/joinoperator?pivots=azuredataexplorer)
+
 ---
 
 ### Task 12: Forecasting
 
-Create a timechart that will show:
+This task will comprise of multiple steps that lead to one overall query.
+
+✍🏻 Create a timechart that will show:
 
 - The number of rides during July 2021
 - A forecast of the number of drive-ins for the first week of August, based on July 2021 (use the `series_decompose_forecast` function).
-
-Hint: Start your query with:
-
-```Kusto
-let min_t = datetime(2021-07-01);
-let max_t = datetime(2021-08-07); // Note that there is no data in the first week of August. We will forecast the data for this week.
-NYCTaxiRides
-| where tpep_dropoff_datetime between (min_t .. max_t)
-```
-
-- Make a series of the number of rides, on `tpep_pickup_datetime` between these dates. Use steps of 30 minutes.
-- Use `series_decompose_forecast` with parameters of this series and second parameter of: `24*7`. The second parameter is an Integer specifying the number of points at the end of the series to predict (forecast). These points are excluded from the learning (regression) process. We will use `24*7` additional data points, in order to forecast a week forward.
 - Once a series is created, you can render a timechart.
+
+Additional Information:
+
+- 🕵🏻 Hint 1: Start your query with:
+
+  ```Kusto
+  let min_t = datetime(2021-07-01);
+  let max_t = datetime(2021-08-07); // Note that there is no data in the first week of August. We will forecast the data for this week.
+  NYCTaxiRides
+  | where tpep_dropoff_datetime between (min_t .. max_t)
+  ```
+
+- 🕵🏻 Hint 2: Make a series of the number of rides, on `tpep_pickup_datetime` between these dates. Use steps of 30 minutes.
+- 🕵🏻 Hint 3: Use `series_decompose_forecast` with parameters of this series and second parameter of: `24*7`. The second parameter is an Integer specifying the number of points at the end of the series to predict (forecast). These points are excluded from the learning (regression) process. We will use `24*7` additional data points, in order to forecast a week forward.
 
 Example result:
 
@@ -358,19 +385,16 @@ Example result:
 
 ### Task 1: Prepare interactive dashboards with ADX Dashboards 🎓
 
-Using the Dashboard feature of Azure Data Explorer, build a dashboard using outputs of any 5 queries (on the `LogisticsTelemetryHistorical` table) that you have created in the previous challenges with the following improvements:
+✍🏻 Using the Dashboard feature of Azure Data Explorer, build a dashboard using outputs of any 5 queries (on the `LogisticsTelemetryHistorical` table) that you have created in the previous challenges with the following improvements:
 
 - Add a filter on the dashboard so that the user can choose the timespan
 - Add a filter on the dashboard so that the user can choose the transportation mode
 
 Include **filters for the dashboard** so that the queries do not need to be modified if the user wants to analyze the charts with different values of a parameter. For example, users would like to analyze the charts over the last week, the last 14 days as well as the last 1 month. Users would also like to analyze the charts by different transportation modes.
 
-Hint 1: In the query window, explore the “Share” menu.
+🕵🏻 Hint 1: In the query window, explore the "Share" menu.
 
 ![Query Share Option](/assets/images/Challenge6-Task1-Pic1.png)
-
-- [Visualize data with the Azure Data Explorer dashboard | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/azure-data-explorer-dashboards)
-- [Parameters in Azure Data Explorer dashboards | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/dashboard-parameters)
 
 Example dashboards:
 
@@ -378,19 +402,25 @@ Example dashboards:
 
 ![Example Dashboard 2](/assets/images/Challenge6-Task1-dashboard2.png)
 
+References:
+
+- [Visualize data with the Azure Data Explorer dashboard | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/azure-data-explorer-dashboards)
+- [Parameters in Azure Data Explorer dashboards | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/dashboard-parameters)
+
 ---
 
 ### Task 2: Prepare Management Dashboard with Power BI
 
-Visualize the outputs of [Task 5 (Pie Chart)](#task-6-get-familiar-with-the-new-table-and-create-a-piechart) and [Task 7 (Datetime Operations)](#task-7-datetime-operations) in Challenge 5 in PowerBI using the **DirectQuery** mode.
+✍🏻 Visualize the outputs of [Task 5 (Pie Chart)](#task-6-get-familiar-with-the-new-table-and-create-a-piechart) and [Task 7 (Datetime Operations)](#task-7-datetime-operations) in Challenge 5 in PowerBI using the **DirectQuery** mode.
 
-Hint 1: In the query window, explore the “Share” menu.
+🕵🏻 Hint 1: In the query window, explore the "Share" menu.
 
-There are multiple ways to connect ADX and Power BI depending on the use case. For this microhack, we will use the DirectQuery method. Feel free to explore other methods on the docs.
+There are multiple ways to connect ADX and Power BI depending on the use case. For this microhack, we will use the DirectQuery method. Feel free to explore other methods listed in the docs.
 
-[Visualize data using the Azure Data Explorer connector for Power BI | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-connector)
+References:
 
-[Visualize data using a query imported into Power BI | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-imported-query)
+- [Visualize data using the Azure Data Explorer connector for Power BI | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-connector)
+- [Visualize data using a query imported into Power BI | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-imported-query)
 
 ---
 
