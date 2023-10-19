@@ -32,11 +32,13 @@ By taking 10 records, we can see that the telemetry column has a JSON structure.
 
 Update Policy is like an internal Extract-Transform-Load (ETL) step. It can help you manipulate or enrich the data as it gets ingested into the source table (e.g. extracting JSON into separate columns, creating a new calculated column, joining the new records with a static dimension table that is already in your database, etc). For these cases, using an update policy is a very common and powerful practice.
 
-Each time records get ingested into the source table, the update policy's qeury (which we'll define in the Update Policy) will run on them (and only on newly ingested records - other existing records in the source table aren’t visible to the Update Policy when it runs). The results of the query will be appended to the target table.
+Each time records get ingested into the source table, the update policy's query (which we'll define in the Update Policy) will run on these records (and only on newly ingested records - other existing records in the source table aren't visible to the Update Policy when it runs). The results of the query will be appended to the target table.
 
-We want to create a new table, with a calculated column (we will call it: `NumOfTagsCalculated`) that contains the following value: `telemetry.TotalTags - telemetry.LostTags`
+Though ADX is purpose-built for interactive, ad-hoc queries over nested JSON data, parsing the JSON data into typed columns at ingestion time can improve performance and reduce query complexity for end users - particularly if you have a lot of queries that need to access the same fields.
 
-The schema of the new (destination) table would be:
+We want to create a new table (called `LogisticsTelemetryManipulated`), with a calculated column (we will call it: `NumOfTagsCalculated`) that contains the result of the calculation: `telemetry.TotalTags - telemetry.LostTags`
+
+The schema of the new (destination) table will be:
 
 ```Kusto
 (deviceId:string, enqueuedTime:datetime, NumOfTagsCalculated:int, Temp:real)
@@ -44,7 +46,7 @@ The schema of the new (destination) table would be:
 
 ![Demo Destination Schema](/assets/images/Challenge4-Task1-Pic1.png)
 
-Example (note that the order of the keys may be different):
+As a reminder, our telemetry data looks like this (note that the order of the keys may be different):
 
 ```JSON
 {
@@ -68,13 +70,19 @@ Example (note that the order of the keys may be different):
 }
 ```
 
-#### Build the target table
+#### Step 1: Build the target table
+
+✍🏻 Run this command to create the target table.
 
 ```Kusto
 .create table LogisticsTelemetryManipulated (deviceId:string, enqueuedTime:datetime, NumOfTagsCalculated:long, Temp:real)
 ```
 
-#### Create a Function for the Update Policy 🎓
+#### Step 2: Create a Function for the Update Policy 🎓
+
+✍🏻 Complete the function that extracts the desired columns and types.
+
+🕵🏻 Hint: You can test the query outside of the `.create-or-alter function` function to verify it works as expected. Then paste the logic into the function to create it.
 
 ```Kusto
 .create-or-alter function ManipulateLogisticsTelemetryData()
@@ -83,22 +91,28 @@ Example (note that the order of the keys may be different):
 }
 ```
 
-#### Create the Update Policy 🎓
+#### Step 3: Create the Update Policy 🎓
 
-```
+✍🏻 Now that the transformation function has been created, let's make a change to the update policy of the destination table to invoke our new function for each new batch of data.
+
+🕵🏻 Hint: Refer to the docs for the syntax of the update policy.
+
+```Kusto
 <Complete the command>
 ```
 
-#### Make sure the data is transformed correctly in the destination table
+#### Step 4: Make sure the data is transformed correctly in the destination table
 
 ```Kusto
 LogisticsTelemetryManipulated
 | take 10
 ```
 
+At the end of this activity, you should see the data from the source table `LogisticsTelemetry` transformed into the destination table `LogisticsTelemetryManipulated`.
+
 References:
 
-- [Kusto update policy - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/management/updatepolicy)
+- [Kusto update policy](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/management/updatepolicy)
 
 ---
 
@@ -120,21 +134,23 @@ let statements are useful for:
 - Defining constants outside of the query body for readability.
 - Defining a variable once and using it multiple times within a query.
 
-🕵🏻 Hint 1: [in operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/in-cs-operator#subquery)
-🕵🏻 Hint 2: [let - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/letstatement#examples)
+🕵🏻 Hint 1: [in operator](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/in-cs-operator#subquery)
+
+🕵🏻 Hint 2: [let](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/letstatement#examples)
+
 🕵🏻 Hint 3: Remember to include a semicolon (`;`) at the end of your let statement.
 
 ---
 
-### Task 2: Add more fields to your timechart 🎓
+### Task 2: Add more fields to your time chart 🎓
 
 📆 Use table: `LogisticsTelemetryHistorical`
 
-✍🏻 Write a query to show a timechart of the historical number of records, by transportation mode. Use 10 minute bins.
+✍🏻 Write a query to show a time chart of the historical number of records, by transportation mode. Use 10 minute bins.
 
 Example result:
 
-![Transport Mode Timechart](/assets/images/chart-4.png)
+![Transport Mode Time Chart](/assets/images/chart-4.png)
 
 ---
 
@@ -145,6 +161,7 @@ Example result:
 ✍🏻 Write a query to show on a map, the locations (based on the longitude and latitude) of 10 devices with the highest temperature in the last 90 days.
 
 🕵🏻 Hint 1: `top` operator
+
 🕵🏻 Hint 2: `render scatterchart with (kind=map)`
 
 Once the map is displayed, you can click on the locations. Note that in order to show more details in the balloon, you need to change the render phrase to include `series=<TempColumn>`.
@@ -230,7 +247,7 @@ This built-in function takes an expression containing a series (_dynamic_ numeri
 
 ```Kusto
 | extend anomalies_flags = series_decompose_anomalies(avg_shock_series, 1)
-| render anomalychart  with(anomalycolumns=anomalies_flags, title='Avg Shock Anomalies')
+| render anomalychart with(anomalycolumns=anomalies_flags, title='Avg Shock Anomalies')
 ```
 
 The anomalies/outliers can be clearly spotted in the 'anomalies_flags' points.
@@ -239,6 +256,8 @@ Example result:
 
 ![Anomaly Detection on Average Shock](/assets/images/Challenge5-Task4-anomalies.png)
 
+🤔 Wait! It looks a lot like it simply figured out the highest and lowest Shock values. Can you tweak the parameters to make it less sensitive?
+
 References:
 
 - [make-series](https://docs.microsoft.com/en-us/azure/data-explorer/time-series-analysis)
@@ -246,17 +265,19 @@ References:
 
 ---
 
-💡 **FOR THE NEXT TASKS, WE WILL USE the NYC TAXI DATA.**
+💡 **FOR THE NEXT TASKS, WE WILL USE THE NYC TAXI DATA**
 
 The NYC Taxi data was ingested into the `NYCTaxiRides` table during Microhack 1. If the proctor hasn't provided the data set, use this Azure Open Dataset on [NYC Taxi Rides](https://docs.microsoft.com/en-us/azure/open-datasets/dataset-taxi-yellow?tabs=azureml-opendatasets) by ingesting it into your ADX cluster.
 
 ---
 
-### Task 6: Get familiar with the new table and create a piechart 🎓
+### Task 6: Get familiar with the new table and create a pie chart 🎓
+
+📆 Use table: `NYCTaxiRides`
 
 Write some queries to get familiar with this table.
 
-✍🏻 After some familiarity, write a query to create a piechart of the payments type. Use `tostring()` to convert the `payment_type` to a string before rendering the piechart.
+✍🏻 After some familiarity, write a query to create a pie chart of the payments type. Use `tostring()` to convert the `payment_type` to a string before rendering the pie chart.
 
 For now, the payment types will be represented by numbers. We will join the payment type table in a later task.
 
@@ -268,20 +289,24 @@ Example result:
 
 ### Task 7: Datetime operations 🎓
 
+📆 Use table: `NYCTaxiRides`
+
 ✍🏻 Write a query to create a column chart which will show the number of rides for each day of the week, across the entire data set. You can use 1, 2, ..., 7 to denote Sunday through Saturday.
 
 Example result:
 
-![Datetimme Operations](/assets/images/taxi-days.png)
+![Datetime Operations](/assets/images/taxi-days.png)
 
 References:
 
-- [dayofweek() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/dayofweekfunction)
-- [datetime_part() - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/datetime-partfunction)
+- [dayofweek()](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/dayofweekfunction)
+- [datetime_part()](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/datetime-partfunction)
 
 ---
 
-### Task 8: Multiple series on the same timechart
+### Task 8: Multiple series on the same time chart
+
+📆 Use table: `NYCTaxiRides`
 
 ✍🏻 Write a query to find out if the tip amount correlates with the number of passengers in the taxi between 1 July 2022 and 31 July 2022. Restrict the number of passengers to a maximum of 4.
 
@@ -289,15 +314,18 @@ References:
 
 Example result:
 
-![Multiple Series Same Timechart](/assets/images/taxi_passengers.png)
+![Multiple Series Same Time chart](/assets/images/taxi_passengers.png)
 
 ---
 
 ### Task 9: Detect anomalies in the tip amount 🎓
 
+📆 Use table: `NYCTaxiRides`
+
 ✍🏻 Write a query to draw an anomaly chart for the tip amount in the month of July 2022.
 
 🕵🏻 Hint 1: `make-series` for the average tip amount, with 1-hour steps
+
 🕵🏻 Hint 2: Use `series_decompose_anomalies` with this series and parameter of `5` (sensitivity level)
 
 Example result:
@@ -308,13 +336,15 @@ Example result:
 
 ### Task 10: External Data 🎓
 
+📆 Use table: `NYCTaxiRides`
+
 The `externaldata` operator returns a table whose schema is defined in the query itself, and whose data is directly read from an external storage artifact, such as a blob in Azure Blob Storage, a file in Azure Data Lake Storage, or even a file in a GitHub repository. Since the data is not being ingested into ADX, it cannot be indexed, compressed, or stored in the hot cache. For best performance, we recommend that data be ingested. External data can, however, be used in sporadic cases, where you do not want to ingest the data.
 
 Take a look at this csv file: [https://raw.githubusercontent.com/Azure/azure-kusto-microhack/main/assets/ExternalData/payment_type_lookup.csv](https://raw.githubusercontent.com/Azure/azure-kusto-microhack/main/assets/ExternalData/payment_type_lookup.csv).
 
 The file represents the mapping between the numeric code of the payment type and its description.
 
-Here is how we can use KQL to handle this external data:
+✍🏻 Here is how we can use KQL to handle this external data:
 
 ```Kusto
 let payment_type_lookup_data = (externaldata (code:string,description:string)
@@ -326,51 +356,55 @@ payment_type_lookup_data
 
 References:
 
-- [externaldata operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/externaldata-operator?pivots=azuredataexplorer)
+- [externaldata operator](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/externaldata-operator?pivots=azuredataexplorer)
 
 ---
 
 ### Task 11: Let's **join** the party 🎓
 
+📆 Use table: `NYCTaxiRides`
+
 The taxi rides table has a field of `Payment_type`. This is a numeric code signifying how the passenger paid for the trip. Use the `payment_type_lookup`, to join between the payment code and the description. Use a _leftouter join_ to merge the rows of the two tables to form a new table, by matching values of the payment code column.
 
-✍🏻 Peform the join operation and render a time chart of the number of records, per payment type over time, with 1 day bins, based on data between 2021-07-01 and 2021-07-31.
+✍🏻 Peform the join operation and render a time chart of the number of records, per payment type over time, with 1-day bins, based on data between 2022-07-01 and 2022-07-31.
 
-🤔 What is the most common method of payment for rides? Credit cards or cash?
-🤔 What does it look like over time?
+🤔 What is the most common method of payment for rides? Credit cards or cash? What does it look like over time?
 
 Example result:
 
-![Payment Types Joined in Timechart](/assets/images/Challenge5-Task9-Pic1.png)
+![Payment Types Joined in Time chart](/assets/images/Challenge5-Task9-Pic1.png)
 
 References:
 
-- [join operator - Azure Data Explorer | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/joinoperator?pivots=azuredataexplorer)
+- [join operator](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query/joinoperator?pivots=azuredataexplorer)
 
 ---
 
 ### Task 12: Forecasting
 
+📆 Use table: `NYCTaxiRides`
+
 This task will comprise of multiple steps that lead to one overall query.
 
-✍🏻 Create a timechart that will show:
+✍🏻 Create a time chart that will show:
 
-- The number of rides during July 2021
-- A forecast of the number of drive-ins for the first week of August, based on July 2021 (use the `series_decompose_forecast` function).
-- Once a series is created, you can render a timechart.
+- The number of rides during July 2022
+- A forecast of the number of drive-ins for the first week of August, based on July 2022 (use the `series_decompose_forecast` function).
+- Once a series is created, you can render a time chart.
 
 Additional Information:
 
 - 🕵🏻 Hint 1: Start your query with:
 
   ```Kusto
-  let min_t = datetime(2021-07-01);
-  let max_t = datetime(2021-08-07); // Note that there is no data in the first week of August. We will forecast the data for this week.
+  let min_t = datetime(2022-07-01);
+  let max_t = datetime(2022-08-07); // Note that there is no data in the first week of August. We will forecast the data for this week.
   NYCTaxiRides
   | where tpep_dropoff_datetime between (min_t .. max_t)
   ```
 
 - 🕵🏻 Hint 2: Make a series of the number of rides, on `tpep_pickup_datetime` between these dates. Use steps of 30 minutes.
+
 - 🕵🏻 Hint 3: Use `series_decompose_forecast` with parameters of this series and second parameter of: `24*7`. The second parameter is an Integer specifying the number of points at the end of the series to predict (forecast). These points are excluded from the learning (regression) process. We will use `24*7` additional data points, in order to forecast a week forward.
 
 Example result:
@@ -404,14 +438,14 @@ Example dashboards:
 
 References:
 
-- [Visualize data with the Azure Data Explorer dashboard | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/azure-data-explorer-dashboards)
-- [Parameters in Azure Data Explorer dashboards | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/dashboard-parameters)
+- [Visualize data with the Azure Data Explorer dashboard](https://docs.microsoft.com/en-us/azure/data-explorer/azure-data-explorer-dashboards)
+- [Parameters in Azure Data Explorer dashboards](https://docs.microsoft.com/en-us/azure/data-explorer/dashboard-parameters)
 
 ---
 
 ### Task 2: Prepare Management Dashboard with Power BI
 
-✍🏻 Visualize the outputs of [Task 5 (Pie Chart)](#task-6-get-familiar-with-the-new-table-and-create-a-piechart) and [Task 7 (Datetime Operations)](#task-7-datetime-operations) in Challenge 5 in PowerBI using the **DirectQuery** mode.
+✍🏻 Visualize the outputs of [Task 5 (Pie Chart)](#task-6-get-familiar-with-the-new-table-and-create-a-piechart) and [Task 7 (Datetime Operations)](#task-7-datetime-operations) in Challenge 5 in Power BI using the **DirectQuery** mode.
 
 🕵🏻 Hint 1: In the query window, explore the "Share" menu.
 
@@ -419,8 +453,8 @@ There are multiple ways to connect ADX and Power BI depending on the use case. F
 
 References:
 
-- [Visualize data using the Azure Data Explorer connector for Power BI | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-connector)
-- [Visualize data using a query imported into Power BI | Microsoft Docs](https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-imported-query)
+- [Visualize data using the Azure Data Explorer connector for Power BI](https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-connector)
+- [Visualize data using a query imported into Power BI](https://docs.microsoft.com/en-us/azure/data-explorer/power-bi-imported-query)
 
 ---
 
